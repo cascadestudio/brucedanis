@@ -4,29 +4,13 @@ import { ILLUSTRATIONS_QUERY, EVENTS_QUERY } from "../../sanity/lib/queries";
 import dynamic from "next/dynamic";
 import IllustrationsGrid from "@/components/IllustrationsGrid";
 import HomeFooter from "@/components/HomeFooter";
-import { useEffect, useState } from "react";
 import Head from "next/head";
-import { useContext } from "react";
-import { Context } from "@/app/Context";
 
 const IllustrationsPreview = dynamic(() =>
   import("@/components/sanityPreview/IllustrationsPreview")
 );
 
 export default function Home({ illustrations, draftMode, events }) {
-  const { isFirstLoad, setIsFirstLoad } = useContext(Context);
-  useEffect(() => {
-    const onPageLoad = () => {
-      setIsFirstLoad(true);
-    };
-    if (document.readyState === "complete") {
-      onPageLoad();
-    } else {
-      window.addEventListener("load", onPageLoad, false);
-      return () => window.removeEventListener("load", onPageLoad);
-    }
-  }, []);
-
   return (
     <>
       <Head>
@@ -36,7 +20,7 @@ export default function Home({ illustrations, draftMode, events }) {
       {draftMode ? (
         <IllustrationsPreview illustrations={illustrations} />
       ) : (
-        isFirstLoad && <IllustrationsGrid illustrations={illustrations} />
+        <IllustrationsGrid illustrations={illustrations} />
       )}
       <HomeFooter events={events} />
     </>
